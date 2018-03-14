@@ -3,6 +3,7 @@ import Block from './block';
 export default class Chain {
 
   constructor() {
+    this.difficulty = 2; // how many zeros should prefix the blocks hashes
   }
 
   createGenesisBlock() {
@@ -30,7 +31,10 @@ export default class Chain {
     const lastBlock = this.getLastBlock();
     newBlock.height = lastBlock.height + 1;
     newBlock.previousHash = lastBlock.hash; 
-    newBlock.hash = newBlock.calculateHash();
+    
+    newBlock.hash = newBlock.mineBlock(this.difficulty);
+    console.log('block mined: ' + newBlock.hash);
+
     this.chain[newBlock.height] = newBlock;
   }
 
