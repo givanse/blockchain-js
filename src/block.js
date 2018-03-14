@@ -1,22 +1,25 @@
 import sha256 from 'crypto-js/sha256';
 
-class Block {
-  constructor(index, timestamp, data, previousHash = '') {
-    this.index = index;
-    this.previousHash = previousHash;
+export default class Block {
+
+  constructor(timestamp, data) {
     this.timestamp = timestamp;
     this.data = data;
-    this.hash = this.getHash();
+    this.height = null;
+    this.previousHash = null;
   }
 
-  getHash() {
-    const blockData = this.index +
+  calculateHash() {
+    const blockContents = this.height +
                       this.previousHash +
                       this.timestamp +
                       JSON.stringify(this.data);
-    const hash = sha256(blockData);
+    const hash = sha256(blockContents);
     return hash.toString(); 
   }
-}
 
-export default Block;
+  isHashValid() {
+    return this.hash === this.calculateHash();
+  }
+
+}
