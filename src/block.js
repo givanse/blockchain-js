@@ -2,10 +2,9 @@ import sha256 from 'crypto-js/sha256';
 
 export default class Block {
 
-  constructor(timestamp, data) {
+  constructor(timestamp, transactions) {
     this.timestamp = timestamp;
-    this.data = data;
-    this.height = null;
+    this.transactions = transactions;
     this.previousHash = null;
 
     // cryptographic nonce, similar in spirit to a nonce word
@@ -14,11 +13,10 @@ export default class Block {
   }
 
   calculateHash() {
-    const blockContents = this.height +
-                      this.previousHash +
-                      this.timestamp +
-                      JSON.stringify(this.data) +
-                      this.nonce;
+    const blockContents = this.previousHash +
+                          this.timestamp +
+                          JSON.stringify(this.transactions) +
+                          this.nonce;
     const hash = sha256(blockContents);
     return hash.toString(); 
   }
